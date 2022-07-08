@@ -10,19 +10,28 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/061322-VA-JavaMSA/jenkins-demo'
             }
         }
-        stage('clean') {
+        
+        stage('remove previous image if exists') {
             steps {
-                sh 'mvn clean'
+                sh 'docker rmi -f kth844/task-manager || true'
             }
         }
-        stage('package') {
+
+        stage('create image') {
             steps {
-                sh 'mvn package'
+                sh 'docker build -t kth844/task-manager .'
             }
         }
-        stage('Deploy') {
+
+        stage('remove previous container if exists') {
             steps {
-                echo 'Deploying....'
+                sh 'docker stop task-app || true'
+            }
+        }
+
+        stage('create container') {
+            steps {
+                sh 'docker run -d -p 80:8080 --name task-app --rm kth844/task-manager'
             }
         }
     }
