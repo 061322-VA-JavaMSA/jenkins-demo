@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!-- Root tag for hibernate config file -->
+<hibernate-configuration>
+
+    <!-- configuration for session factory -->
+    <session-factory>
+    	<!-- Showing credentials is bad practice -->
+		<property name="hibernate.connection.url">jdbc:postgresql://database-1.cllvqmegtmuc.us-east-1.rds.amazonaws.com:5432/postgres</property>
+		<property name="hibernate.connection.username">postgres</property>
+		<property name="hibernate.connection.password">p4ssw0rd</property>
+		
+		<property name="hibernate.driver_class">org.postgresql.Driver</property>
+		<property name="hibernate.connection.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+		<property name="hibernate.show_sql">true</property>
+		
+	<!--<property name="hibernate.default_schema"></property> -->
+		<property name="hibernate.hbm2ddl.auto">validate</property>
+		
+		
+		<mapping class="com.revature.models.User"></mapping>
+		<mapping class="com.revature.models.Task"></mapping>
+    </session-factory>
+
+</hibernate-configuration>
