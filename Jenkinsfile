@@ -13,7 +13,7 @@ pipeline {
         stage('Code quality analysis'){
             steps{
                 withSonarQubeEnv(credentialsId: 'SONAR_TOKEN', installationName: 'sonar-scanner'){
-                    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent org.jacoco:jacoco-maven-plugin:report sonar:sonar -Pcoverage'
+                    sh 'mvn sonar:sonar -Pcoverage'
                 }
             }
         }
