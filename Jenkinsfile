@@ -13,7 +13,7 @@ pipeline {
         stage('Code quality analysis'){
             steps{
                 withSonarQubeEnv(credentialsId: 'SONAR_TOKEN', installationName: 'sonar-scanner'){
-                    sh 'mvn clean verify sonar:sonar'
+                    sh 'mvn clean verify sonar:sonar -Pcoverage'
                 }
             }
         }
