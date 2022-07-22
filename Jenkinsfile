@@ -12,13 +12,8 @@ pipeline {
     stages{
         stage('Code quality analysis'){
             steps{
-                sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Pcoverage'
-            }
-        }
-        stage('Code quality analysis'){
-            steps{
                 withSonarQubeEnv(credentialsId: 'SONAR_TOKEN', installationName: 'sonar-scanner'){
-                    sh 'mvn sonar:sonar -Pcoverage'
+                    sh 'mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -Pcoverage'
                 }
             }
         }
