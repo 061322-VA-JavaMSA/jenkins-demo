@@ -12,7 +12,7 @@ pipeline {
     stages{
         stage('Code quality analysis'){
             steps{
-                withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar-scanner'){
+                withSonarQubeEnv(credentialsId: 'SONAR_TOKEN', installationName: 'sonar-scanner'){
                     sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=061322-VA-JavaMSA_jenkins-demo'
                 }
             }
