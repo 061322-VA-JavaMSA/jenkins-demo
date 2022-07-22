@@ -5,9 +5,6 @@ import java.util.Objects;
 import com.revature.models.Role;
 import com.revature.models.User;
 
-/*-
- * Data Transfer Objects
- */
 public class UserDTO {
 
 	private int id;

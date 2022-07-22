@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    active:
+    - "@profileActive@"
+
+# Actuator settings to display more metrics about the application
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*"

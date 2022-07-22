@@ -1,31 +1,37 @@
 package com.revature.services;
 
-import com.revature.daos.UserDAO;
-import com.revature.daos.UserPostgres;
-import com.revature.exceptions.LoginException;
-import com.revature.exceptions.UserNotFoundException;
-import com.revature.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.revature.exceptions.AuthenticationException;
+import com.revature.models.User;
+import com.revature.repositories.UserRepository;
+
+@Service
 public class AuthService {
 
-	private UserDAO ud = new UserPostgres();
+	private UserRepository ur;
+
+	@Autowired
+	public AuthService(UserRepository ur) {
+		super();
+		this.ur = ur;
+	}
 	
-	/*-
-	 * if the user is found by username and the password matches, returns that user
-	 */
-	public User login(String username, String password) throws UserNotFoundException, LoginException {
+	public User login(String username, String password) {
+		User principal = ur.findUserByUsername(username);
 		
-		// principal refers to "currently logged in user"
-		User principal = ud.getUserByUsername(username);
-		
-		if(principal == null) {
-			throw new UserNotFoundException();
-		}
-		
-		if(!principal.getPassword().equals(password)){
-			throw new LoginException();
+		// AuthLogic
+		if(principal == null || password == null || !password.equals(principal.getPassword())){
+			throw new AuthenticationException();
 		}
 		
 		return principal;
+	}
+	
+	public String generateToken(User principal) {
+		// NOT BEST PRACTICE, JUST EXAMPLE PURPOSE
+		String token = principal.getId() + ":" + principal.getRole();
+		return token;
 	}
 }
