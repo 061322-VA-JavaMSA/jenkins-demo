@@ -10,6 +10,13 @@ pipeline {
         DB_PASS=credentials('DB_PASS')
     }
     stages{
+        stage('Code quality analysis'){
+            steps{
+                withSonarQubeEnv(credentialsId: 'sonar-token', installationName: 'sonar'){
+                    sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=061322-VA-JavaMSA_jenkins-demo'
+                }
+            }
+        }
       stage('package') {
          steps {
             sh 'mvn package -Dmaven.test.skip=true -Pprod'
