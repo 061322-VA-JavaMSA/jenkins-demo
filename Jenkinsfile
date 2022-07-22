@@ -1,5 +1,5 @@
 pipeline {
-     agent any
+    agent any
     environment{
         PORT_HOST="8081"
         PORT_CONT="8080"
