@@ -12,7 +12,7 @@ pipeline {
     stages{
       stage('package') {
          steps {
-            sh 'mvn package -Pprod'
+            sh 'mvn package -Dmaven.test.skip=true -Pprod'
          }
       }
       stage('remove previous image if exists') {
