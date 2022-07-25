@@ -55,18 +55,26 @@ public class UserControllerTest {
 		when(us.getUserById(1)).thenReturn(uservExpected);
 		
 		mockMvc.perform(
-				get("/users/1"))
+				get("/users/1")
+				.header("Authorization", "1:ADMIN"))
 			.andExpect(status().isOk())
 			.andExpect(content().json(om.writeValueAsString(expected)));
 	}
 	
 	@Test
 	public void getUserByIdNotExist() throws JsonProcessingException, Exception {
-
+		User userAdmin = new User();
+		userAdmin.setId(1);
+		userAdmin.setUsername("kev");
+		userAdmin.setPassword("pass");
+		userAdmin.setRole(Role.ADMIN);
+		// for Auth Token
+		when(us.getUserById(1)).thenReturn(userAdmin);
 		when(us.getUserById(3)).thenThrow(UserNotFoundException.class);
 		
 		mockMvc.perform(
-				get("/users/3"))
+				get("/users/3")
+				.header("Authorization", "1:ADMIN"))
 			.andExpect(status().isNotFound());
 	}
 	
@@ -81,6 +89,8 @@ public class UserControllerTest {
 		List<User> users = new ArrayList<>();
 		users.add(u1);
 
+		// for Auth Token
+		when(us.getUserById(1)).thenReturn(u1);
 		
 		List<UserDTO> usersDTO = new ArrayList<>();
 		usersDTO.add(new UserDTO(u1));
@@ -88,7 +98,8 @@ public class UserControllerTest {
 		when(us.getUsers()).thenReturn(users);
 		
 		mockMvc.perform(
-				get("/users"))
+				get("/users")
+				.header("Authorization", "1:ADMIN"))
 			.andExpect(status().isOk())
 			.andExpect(content().json(om.writeValueAsString(usersDTO)));
 	}
