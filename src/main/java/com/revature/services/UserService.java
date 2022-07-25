@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.revature.exceptions.RegistrationException;
 import com.revature.exceptions.UserNotFoundException;
 import com.revature.models.Role;
 import com.revature.models.User;
@@ -21,22 +22,6 @@ public class UserService {
 		super();
 		this.ur = ur;
 	}
-	
-	/*-
-	 * 		/users
-	 * 			- GET - returns all users
-	 * 				- ?role={value} - returns all user for a role
-	 * 			- POST - creates a user in the db
-	 * 
-	 * 				
-	 * 		/users/{id}
-	 * 			- GET - return a user by an id
-	 * 					- throw UserNotFoundException if not found
-	 * 			- PUT - update a user by id if the user exists
-	 * 					- throw UserNotFoundException if not found
-	 * 			- DELETE - delete a user by id if exists
-	 * 					- throw UserNotFoundException if not found
-	 */
 	
 	public List<User> getUsers(){
 		return ur.findAll();
@@ -55,7 +40,14 @@ public class UserService {
 	
 	@Transactional
 	public User addUser(User user) {
+		user.setUsername(user.getUsername().toLowerCase());
+		User alreadyExist = ur.findUserByUsername(user.getUsername());
 		
+		if(alreadyExist != null) {
+			throw new RegistrationException();
+		}
+		
+
 		user.setRole(Role.BASIC_USER);
 		
 		return ur.save(user);

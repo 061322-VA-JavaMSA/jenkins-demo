@@ -19,7 +19,7 @@ public class AuthService {
 	}
 	
 	public User login(String username, String password) {
-		User principal = ur.findUserByUsername(username);
+		User principal = ur.findUserByUsername(username.toLowerCase());
 		
 		// AuthLogic
 		if(principal == null || password == null || !password.equals(principal.getPassword())){

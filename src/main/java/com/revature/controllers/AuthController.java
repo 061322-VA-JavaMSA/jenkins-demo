@@ -16,8 +16,6 @@ import com.revature.services.AuthService;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(exposedHeaders="Authorization")
-// basically @Controller which implicitely adds @ResponseBody to all methods declared
 public class AuthController {
 
 	private AuthService as;
@@ -28,18 +26,11 @@ public class AuthController {
 		this.as = as;
 	}
 	
-	/*-
-	 * Query params: localhost:8080/auth?username=[value]&password=[value]
-	 * 
-	 * Using URL form Encodded localhost:8080/auth
-	 * 	- ?username=[value]&password=[value] in the request body
-	 */
 	@PostMapping
 	public ResponseEntity<UserDTO> login(@RequestParam(name="username")String username, @RequestParam(name="password") String password){
+		
 		User principal = as.login(username, password);
-		
 		String token = as.generateToken(principal);
-		
 		HttpHeaders headers = new HttpHeaders();
 		
 		headers.set("Authorization", token);
